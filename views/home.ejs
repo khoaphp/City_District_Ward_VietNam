@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{width: 40%; padding: 50px; margin:auto; margin-top:20px; background-color: aquamarine;}
+        select{width: 200px; font-size: 20px;}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("http://localhost:3000/location/city", function(data){
+                $("#sl_City").html("");
+                if(data.result==1){
+                    data.data.forEach(function(city){
+                        $("#sl_City").append("<option value='"+city.ID+"'>"+city.Title+"</option>");
+                    });
+                }
+            });
+
+            $("#sl_City").change(function(){
+                $.get("http://localhost:3000/location/district/"+$(this).val(), function(data){
+                    $("#sl_District").html("");
+                    if(data.result==1){
+                        data.data.forEach(function(district){
+                            $("#sl_District").append("<option value='"+district.ID+"'>"+district.Title+"</option>");
+                        });
+                    }
+                });
+            });
+
+            $("#sl_District").change(function(){
+                $.get("http://localhost:3000/location/ward/"+$(this).val(), function(data){
+                    $("#sl_Ward").html("");
+                    if(data.result==1){
+                        data.data.forEach(function(district){
+                            $("#sl_Ward").append("<option value='"+district.ID+"'>"+district.Title+"</option>");
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <select id="sl_City"></select>
+        <select id="sl_District"></select>
+        <select id="sl_Ward"></select>
+    </div>
+</body>
+</html>
